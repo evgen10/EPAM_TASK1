@@ -11,25 +11,31 @@ namespace T1
     {
         static void Main(string[] args)
         {
-
-            DirectoryInfo directory = new DirectoryInfo(@"D:\Tasks\01. Advanced C#");
-
-            FileSystemVisitor fileInfo = new FileSystemVisitor();
-
-
-            fileInfo.FindItems(@"D:\Tasks");
-
-            foreach (var item in fileInfo.GetFindedItems())
+            try
             {
-                Console.WriteLine(item.Deep + " " + item.Name);
+                
+                FileSystemVisitor fileInfo = new FileSystemVisitor();               
+
+                fileInfo.FindItems(@"D:\Music");
+
+                foreach (var item in fileInfo.GetFindedItems())
+                {
+                    StringBuilder space = new StringBuilder();
+                    space.Append(' ', item.Deep);              
+
+
+                    Console.WriteLine(space+item.Name);
+                }
+               
+                Console.Read();
             }
+            catch (Exception)
+            {
 
-
-
-
-
-
-            Console.Read();
+                Console.WriteLine("Directory not found.");
+                Console.Read();
+            }
+       
         }
     }
 }
