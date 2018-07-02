@@ -125,14 +125,14 @@ namespace T1
             //Определяем начальную точку поиска
             DirectoryInfo directory = new DirectoryInfo(derictoryPath);
 
-            //получаем имеющиеся в данной точке деректроии
+            //получаем имеющиеся в данной точке директроии
             var directories = directory.GetDirectories();
             deep++;
 
             //если деректроия не пуста
             if (directories.Length == 0)
             {
-                //получаем файлы в данной деректории
+                //получаем файлы в данной директории
                 var files = directory.GetFiles();
 
                 foreach (var item in FindFiles(files))
@@ -140,26 +140,25 @@ namespace T1
                     yield return item;
                 }
 
-
                 deep--;
 
             }
-            //если деректория содержит элементы
+            //если директория содержит элементы
             else
             {
-                //проходим по всем деректориям 
+                //проходим по всем директориям 
                 foreach (var drctr in directories)
                 {
                     yield return new CatalogItem { Name = drctr.Name, PathFull = drctr.FullName, Deep = deep, Item = CatalogItems.Directory };
 
-                    //проходим по элементам в деректории
+                    //проходим по элементам в директории
                     foreach (var item in FindItems(drctr.FullName))
                     {
                         yield return item;
                     }
                 }
 
-                //получаем файлы в данной деректории
+                //получаем файлы в данной директории
                 var files = directory.GetFiles();
 
                 foreach (var item in FindFiles(files))

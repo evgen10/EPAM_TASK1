@@ -100,6 +100,8 @@ namespace T1
         }
 
 
+
+
         private static void OnFinished()
         {
             Console.ForegroundColor = ConsoleColor.Red;
