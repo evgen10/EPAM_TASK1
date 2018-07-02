@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace T1
 {
-    enum CatalogItems
+    enum  CatalogItems
     {
         Directory,
         File
