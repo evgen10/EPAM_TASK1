@@ -13,38 +13,16 @@ namespace T1
 
         static void Main(string[] args)
         {
-            //try
-            //{
+           
 
-            //    FileSystemVisitor fileInfo = new FileSystemVisitor();               
-
-            //    fileInfo.FindItems(@"D:\Tasks\01. Advanced C#");
-
-            //    foreach (var item in fileInfo.GetFindedItems())
-            //    {
-            //        StringBuilder space = new StringBuilder();
-            //        space.Append(' ', item.Deep);              
-
-
-            //        Console.WriteLine(space+item.Name);
-            //    }
-
-            //    Console.Read();
-            //}
-            //catch (Exception)
-            //{
-
-            //    Console.WriteLine("Directory not found.");
-            //    Console.Read();
-            //}
-
-            string path = @"D:\Tasks\01. Advanced C#";
-            
+            string path = @"C:\Users\iammr\Desktop\01. Advanced C#";
 
             try
             {
 
                 FileSystemVisitor fileInfo = new FileSystemVisitor();
+
+                //конструктор с фильтром
                 //FileSystemVisitor fileInfo = new FileSystemVisitor(MFilter);
 
                 fileInfo.Start += OnStarted;
@@ -85,22 +63,8 @@ namespace T1
             {
                 return false;
             }
-        }
-        
-
-        private static void OnFileFinded()
-        {
-
-            if (false)
-            {
-
-            }
-            
-               
-        }
-
-
-
+        }     
+                           
 
         private static void OnFinished()
         {
@@ -114,6 +78,7 @@ namespace T1
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nThe search started!");
             Console.ResetColor();
-        }
+        }     
+
     }
 }

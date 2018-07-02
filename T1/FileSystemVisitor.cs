@@ -9,28 +9,22 @@ namespace T1
 {
 
     delegate void StartFinish();
-
     delegate bool Filter(FileInfo item);
-
-
+ 
     class FileSystemVisitor
-    {
-
-        // private List<CatalogItem> findedItems = new List<CatalogItem>();
-
+    {   
         //вложенность файла или папки
-        private int deep = 0;
-
+        private int deep = 0;           
+        
         public event StartFinish Start;
-        public event StartFinish Finish;
+        public event StartFinish Finish;        
 
         //экземпляр делегата для фильтрации
         private Filter MyFilter = null;
 
-
         public FileSystemVisitor()
         {
-
+            
         }
 
         public FileSystemVisitor(Filter filter)
@@ -38,62 +32,11 @@ namespace T1
             MyFilter = filter;
         }
 
-        //public List<CatalogItem> GetFindedItems()
-        //{
-        //    return findedItems;
-        //}       
-
-
-        //public void FindItems(string derictoryPath)
-        //{
-        //    DirectoryInfo directory = new DirectoryInfo(derictoryPath);
-
-        //    var directories = directory.GetDirectories();
-        //    var files = directory.GetFiles();            
-
-        //    deep++;          
-
-        //    if (directories.Length == 0)
-        //    {               
-        //        foreach (var file in files)
-        //        {
-        //            findedItems.Add(new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File });
-        //        }
-
-        //        deep--;
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        foreach (var drctr in directories)
-        //        {
-        //            findedItems.Add(new CatalogItem { Name = drctr.Name, PathFull = drctr.FullName, Deep = deep, Item = CatalogItems.Directory });
-        //            FindItems(drctr.FullName);
-        //        }          
-
-        //        foreach (var file in files)
-        //        {
-        //            findedItems.Add(new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File });
-        //        }
-
-        //        deep--;
-
-        //    }
-
-
-
-
-        //}
-
-
-
-
-        //переберает файлы
+        //перебирает файлы
         private IEnumerable<CatalogItem> FindFiles(FileInfo[] files)
         {
             foreach (var file in files)
             {
-
                 //если алгоритм фильтрации задан
                 if (MyFilter != null)
                 {
@@ -104,14 +47,12 @@ namespace T1
                     }
                 }
                 else
-                {
+                {                   
                     yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };
                 }
 
-
             }
         }
-
 
 
         public IEnumerable<CatalogItem> FindItems(string derictoryPath)
@@ -129,7 +70,7 @@ namespace T1
             var directories = directory.GetDirectories();
             deep++;
 
-            //если деректроия не пуста
+            //если директория не пуста
             if (directories.Length == 0)
             {
                 //получаем файлы в данной директории
@@ -148,12 +89,20 @@ namespace T1
             {
                 //проходим по всем директориям 
                 foreach (var drctr in directories)
-                {
+                {                
+
                     yield return new CatalogItem { Name = drctr.Name, PathFull = drctr.FullName, Deep = deep, Item = CatalogItems.Directory };
 
                     //проходим по элементам в директории
                     foreach (var item in FindItems(drctr.FullName))
                     {
+                        ////если файл найден
+                        //if (finded)
+                        //{
+                        //    Finish();
+                        //    yield break;
+                        //}
+
                         yield return item;
                     }
                 }
