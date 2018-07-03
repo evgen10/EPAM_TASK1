@@ -119,13 +119,11 @@ Enter 2  to search WITH filtering");
          
 
                     fileInfo.Start += OnStarted;
-                    fileInfo.Finish += OnFinished;                 
-                                        
-                    
+                    fileInfo.Finish += OnFinished;
+
                     fileInfo.DirectoryFinded += ChangeDirectoryColor;
 
-
-                    //fileInfo.FilteredFileFinded += FilteredFileStopSearch;
+                
                     fileInfo.FilteredFileFinded += ChangeColorForFiltredFile;
 
                     fileInfo.FilteredDirectoryFinded += ChangeColorForFiltredDirectory;

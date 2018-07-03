@@ -27,6 +27,7 @@ namespace T1
     {
         //вложенность файла или папки
         private int deep = 0;
+        //указывает используется ли фильтр
         private bool filtred;
 
 
@@ -44,6 +45,7 @@ namespace T1
 
         //экземпляр делегата для фильтрации
         private Filter MyFilter = null;
+
 
         public FileSystemVisitor()
         {
