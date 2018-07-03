@@ -10,27 +10,52 @@ namespace T1
 
     delegate void StartFinish();
     delegate bool Filter(FileInfo item);
- 
+    delegate void FindedItem();
+
+    class FileEventArgs : EventArgs
+    {
+        public string extention;
+    }
+
+    class DirectoryEventArgs : EventArgs
+    {
+        public bool isEmpty;
+    }
+
+
     class FileSystemVisitor
-    {   
+    {
         //вложенность файла или папки
-        private int deep = 0;           
-        
+        private int deep = 0;
+        private bool filtred;
+
+
+        private FileEventArgs args = new FileEventArgs();
+        private DirectoryEventArgs dirArgs = new DirectoryEventArgs();
+
+
+
         public event StartFinish Start;
-        public event StartFinish Finish;        
+        public event StartFinish Finish;
+        public event EventHandler<FileEventArgs> FileFinded;
+        public event EventHandler<DirectoryEventArgs> DirectoryFinded;
+        public event EventHandler<FileEventArgs> FilteredFileFinded;
+        public event EventHandler<DirectoryEventArgs> FilteredDirectoryFinded;
 
         //экземпляр делегата для фильтрации
         private Filter MyFilter = null;
 
         public FileSystemVisitor()
         {
-            
+
         }
 
         public FileSystemVisitor(Filter filter)
         {
             MyFilter = filter;
+            filtred = true;
         }
+
 
         //перебирает файлы
         private IEnumerable<CatalogItem> FindFiles(FileInfo[] files)
@@ -41,13 +66,17 @@ namespace T1
                 if (MyFilter != null)
                 {
                     if (MyFilter(file))
-                    {                        
-                        yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };                      
-                        
+                    {
+                        args.extention = file.Extension;
+                        FilteredFileFinded?.Invoke(this, args);
+                        yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };
+
                     }
                 }
                 else
-                {                   
+                {
+                    args.extention = file.Extension;
+                    FileFinded?.Invoke(this, args);
                     yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };
                 }
 
@@ -57,75 +86,123 @@ namespace T1
 
         public IEnumerable<CatalogItem> FindItems(string derictoryPath)
         {
-            //событие начала поиска
-            if (deep == 0)
-            {
-                Start?.Invoke();
-            }
 
             //Определяем начальную точку поиска
             DirectoryInfo directory = new DirectoryInfo(derictoryPath);
 
-            //получаем имеющиеся в данной точке директроии
-            var directories = directory.GetDirectories();
-            deep++;
-
-            //если директория не пуста
-            if (directories.Length == 0)
+            if (deep == 0)
             {
-                //получаем файлы в данной директории
-                var files = directory.GetFiles();
+                //событие начала поиска
+                Start?.Invoke();
+               
 
-                foreach (var item in FindFiles(files))
+                if (filtred)
                 {
-                    yield return item;
+                    FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                }
+                else
+                {
+                    DirectoryFinded?.Invoke(this, dirArgs);
                 }
 
-                deep--;
-
+                yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
             }
-            //если директория содержит элементы
+
+
+            if (directory.GetFiles().Length == 0 && directory.GetDirectories().Length == 0)
+            {
+                dirArgs.isEmpty = true;
+                if (filtred)
+                {
+                    FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                }
+                else
+                {
+                    DirectoryFinded?.Invoke(this, dirArgs);
+                }           
+                yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
+            }
             else
             {
-                //проходим по всем директориям 
-                foreach (var drctr in directories)
-                {                
+                dirArgs.isEmpty = false;
+                //получаем имеющиеся в данной точке директроии
+                var directories = directory.GetDirectories();
 
-                    yield return new CatalogItem { Name = drctr.Name, PathFull = drctr.FullName, Deep = deep, Item = CatalogItems.Directory };
+                deep++;
 
-                    //проходим по элементам в директории
-                    foreach (var item in FindItems(drctr.FullName))
+                //если директория не содержит других директорий
+                if (directories.Length == 0)
+                {
+
+                    //получаем файлы в данной директории
+                    var files = directory.GetFiles();
+
+
+                    foreach (var item in FindFiles(files))
                     {
-                        ////если файл найден
-                        //if (finded)
-                        //{
-                        //    Finish();
-                        //    yield break;
-                        //}
-
                         yield return item;
+                    }
+
+                    deep--;
+
+                }
+                //если директория содержит элементы
+                else
+                {
+                    //проходим по всем директориям 
+                    foreach (var drctr in directories)
+                    {
+                        bool dirEmpty = drctr.GetFiles().Length == 0 && drctr.GetDirectories().Length == 0;
+
+                        
+                        if (dirEmpty)
+                        {
+                            dirArgs.isEmpty = true;
+                        }
+
+                        
+                        if (filtred)
+                        {
+                            FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                        }
+                        else
+                        {
+                            DirectoryFinded?.Invoke(this, dirArgs);
+                        }
+                        yield return new CatalogItem { Name = drctr.Name, Deep = deep, PathFull = drctr.FullName, Item = CatalogItems.Directory };
+
+                        if (!dirEmpty)                      
+                        {
+                            dirArgs.isEmpty = false;
+                            //проходим по элементам в директории
+                            foreach (var item in FindItems(drctr.FullName))
+                            {
+                                yield return item;
+                            }
+                        }
+
+                        dirArgs.isEmpty = false;
+
+                    }
+
+                    //получаем файлы в данной директории
+                    var files = directory.GetFiles();
+
+                    foreach (var item in FindFiles(files))
+                    {
+                        yield return item;
+                    }
+
+                    deep--;
+
+                    //завершение поиска
+                    if (deep == 0)
+                    {
+                        Finish?.Invoke();
                     }
                 }
 
-                //получаем файлы в данной директории
-                var files = directory.GetFiles();
-
-                foreach (var item in FindFiles(files))
-                {
-                    yield return item;
-                }
-
-                deep--;
-
-                //завершение поиска
-                if (deep == 0)
-                {
-                    Finish?.Invoke();
-                }
-
-
             }
-
         }
 
     }
