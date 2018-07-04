@@ -24,5 +24,3 @@ C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csprojRe
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csproj.CoreCompileInputs.cache
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.exe
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.pdb
-D:\Tasks\Code\Task1\Epam_Task1\T1\bin\Debug\ConsoleApplicationLibrary.dll
-D:\Tasks\Code\Task1\Epam_Task1\T1\bin\Debug\ConsoleApplicationLibrary.pdb
