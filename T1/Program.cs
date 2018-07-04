@@ -8,7 +8,7 @@ using ConsoleApplicationLibrary.UtilityClasses;
 
 namespace T1
 {
-    class Program
+    public class Program
     {
 
         //флаг для остановки поиска
@@ -23,13 +23,12 @@ namespace T1
 
 
         //хранит начальную директорию
-        static string path = @"D:\Tasks\01. Advanced C#";
-       
+        static string path = @"D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
+
 
         static void Main(string[] args)
-        {
-
-            //string path = @"C:\Users\Evgeniy_Chernyshkov\Desktop\New Folder (2)";
+        {    
+           // string path = @"C:\Users\Evgeniy_Chernyshkov\Desktop\New Folder (3)";
             FileSystemVisitor fileInfo = new FileSystemVisitor();
 
             do
@@ -48,9 +47,7 @@ Enter 2  to search WITH filtering");
                             {
 
                                 fileInfo = new FileSystemVisitor();
-
-                                Console.WriteLine(@"Enter extension for file. For example .txt");
-                                extensionForFile = Console.ReadLine();
+                               
 
                                 Console.WriteLine(@"Select action for event. 
 1-Stop search if file extension equals entered extension.
@@ -66,12 +63,15 @@ Enter 2  to search WITH filtering");
 
                                     case 1:
                                         {
-
+                                            Console.WriteLine(@"Enter extension for file. For example .txt");
+                                            extensionForFile = Console.ReadLine();
                                             fileInfo.FileFinded += StopSearchForDocument;
                                             break;
                                         }
                                     case 2:
                                         {
+                                            Console.WriteLine(@"Enter extension for file. For example .txt");
+                                            extensionForFile = Console.ReadLine();
                                             fileInfo.FileFinded += ExcludeFile;
                                             break;
                                         }
@@ -105,19 +105,21 @@ Enter 2  to search WITH filtering");
                                 Console.WriteLine(@"Enter extension to filter. For example .txt");
                                 extensionForFilter = Console.ReadLine();
 
+                                SearchFilter filter = new SearchFilter(extensionForFilter);
 
-                                fileInfo = new FileSystemVisitor(MFilter);
+                                fileInfo = new FileSystemVisitor(filter.MFilter);
                                 break;
                             }
 
                         default:
                             {
+                               
                                 continue;                             
                             }
 
                     }
          
-
+                    //присвоение обработчиков событиям
                     fileInfo.Start += OnStarted;
                     fileInfo.Finish += OnFinished;
 
@@ -127,13 +129,15 @@ Enter 2  to search WITH filtering");
                     fileInfo.FilteredFileFinded += ChangeColorForFiltredFile;
 
                     fileInfo.FilteredDirectoryFinded += ChangeColorForFiltredDirectory;
+            
 
-
+                    //Вызваем итератор
                     foreach (var item in fileInfo.FindItems(path))
                     {
                         
                         if (addStopper)
                         {
+                            //количество отступов в зависимости от уровня вложенности
                             StringBuilder space = new StringBuilder();
                             space.Append(' ', item.Deep);
 
@@ -143,23 +147,22 @@ Enter 2  to search WITH filtering");
 
                         Console.ResetColor();
 
+                        
                         if (searchStopper)
-                        {
+                        {                           
                             break;
                         }
 
-
+                        
                         addStopper = true;
 
 
                     }
-
-
+                    
                     Console.Read();
                 }
                 catch (Exception)
                 {
-
                     Console.WriteLine("Directory not found.");
                     Console.Read();
                 }
@@ -168,22 +171,8 @@ Enter 2  to search WITH filtering");
 
 
 
-        }
-
-
-
-        //фильрация каталогоа
-        private static bool MFilter(FileInfo file)
-        {
-            if (file.Extension == extensionForFilter)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        }  
+       
 
 
 

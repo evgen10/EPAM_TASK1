@@ -6,22 +6,47 @@ using System.Threading.Tasks;
 
 namespace T1
 {
-    enum  CatalogItems
+    public enum  CatalogItems
     {
         Directory,
         File
     }
 
 
-    class CatalogItem
+    public class CatalogItem
     {
-        public string Name { get; set; }
-
-        public string PathFull { get; set; }
+        public string Name { get; set; }       
 
         public CatalogItems  Item { get; set; }
 
         public int Deep { get; set; }
 
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();  
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            CatalogItem item = obj as CatalogItem;
+
+            if (item as CatalogItem == null)
+            {
+                return false;
+            }
+
+            return Name == item.Name && Item == item.Item && Deep == item.Deep;
+
+        }
+
     }
+
+
+    
 }

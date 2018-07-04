@@ -8,22 +8,22 @@ using System.IO;
 namespace T1
 {
 
-    delegate void StartFinish();
-    delegate bool Filter(FileInfo item);
-    delegate void FindedItem();
+    public delegate void StartFinish();
+    public delegate bool Filter(FileInfo item);
+    public delegate void FindedItem();
 
-    class FileEventArgs : EventArgs
+    public class FileEventArgs : EventArgs
     {
         public string extention;
     }
 
-    class DirectoryEventArgs : EventArgs
+    public class DirectoryEventArgs : EventArgs
     {
         public bool isEmpty;
     }
 
 
-    class FileSystemVisitor
+    public class FileSystemVisitor
     {
         //вложенность файла или папки
         private int deep = 0;
@@ -31,11 +31,10 @@ namespace T1
         private bool filtred;
 
 
-        private FileEventArgs args = new FileEventArgs();
-        private DirectoryEventArgs dirArgs = new DirectoryEventArgs();
+        private FileEventArgs fileArgs = new FileEventArgs();
+        private DirectoryEventArgs directoryArgs = new DirectoryEventArgs();
 
-
-
+        
         public event StartFinish Start;
         public event StartFinish Finish;
         public event EventHandler<FileEventArgs> FileFinded;
@@ -69,17 +68,17 @@ namespace T1
                 {
                     if (MyFilter(file))
                     {
-                        args.extention = file.Extension;
-                        FilteredFileFinded?.Invoke(this, args);
-                        yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };
+                        fileArgs.extention = file.Extension;
+                        FilteredFileFinded?.Invoke(this, fileArgs);
+                        yield return new CatalogItem { Name = file.Name, Deep = deep, Item = CatalogItems.File };
 
                     }
                 }
                 else
                 {
-                    args.extention = file.Extension;
-                    FileFinded?.Invoke(this, args);
-                    yield return new CatalogItem { Name = file.Name, PathFull = file.FullName, Deep = deep, Item = CatalogItems.File };
+                    fileArgs.extention = file.Extension;
+                    FileFinded?.Invoke(this, fileArgs);
+                    yield return new CatalogItem { Name = file.Name, Deep = deep, Item = CatalogItems.File };
                 }
 
             }
@@ -100,11 +99,11 @@ namespace T1
 
                 if (filtred)
                 {
-                    FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                    FilteredDirectoryFinded?.Invoke(this, directoryArgs);
                 }
                 else
                 {
-                    DirectoryFinded?.Invoke(this, dirArgs);
+                    DirectoryFinded?.Invoke(this, directoryArgs);
                 }
 
                 yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
@@ -113,24 +112,25 @@ namespace T1
 
             if (directory.GetFiles().Length == 0 && directory.GetDirectories().Length == 0)
             {
-                dirArgs.isEmpty = true;
+                directoryArgs.isEmpty = true;
                 if (filtred)
                 {
-                    FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                    FilteredDirectoryFinded?.Invoke(this, directoryArgs);
                 }
                 else
                 {
-                    DirectoryFinded?.Invoke(this, dirArgs);
+                    DirectoryFinded?.Invoke(this, directoryArgs);
                 }           
                 yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
             }
             else
             {
-                dirArgs.isEmpty = false;
+                directoryArgs.isEmpty = false;
                 //получаем имеющиеся в данной точке директроии
                 var directories = directory.GetDirectories();
 
                 deep++;
+              
 
                 //если директория не содержит других директорий
                 if (directories.Length == 0)
@@ -159,23 +159,23 @@ namespace T1
                         
                         if (dirEmpty)
                         {
-                            dirArgs.isEmpty = true;
+                            directoryArgs.isEmpty = true;
                         }
 
                         
                         if (filtred)
                         {
-                            FilteredDirectoryFinded?.Invoke(this, dirArgs);
+                            FilteredDirectoryFinded?.Invoke(this, directoryArgs);
                         }
                         else
                         {
-                            DirectoryFinded?.Invoke(this, dirArgs);
+                            DirectoryFinded?.Invoke(this, directoryArgs);
                         }
-                        yield return new CatalogItem { Name = drctr.Name, Deep = deep, PathFull = drctr.FullName, Item = CatalogItems.Directory };
+                        yield return new CatalogItem { Name = drctr.Name, Deep = deep, Item = CatalogItems.Directory };
 
                         if (!dirEmpty)                      
                         {
-                            dirArgs.isEmpty = false;
+                            directoryArgs.isEmpty = false;
                             //проходим по элементам в директории
                             foreach (var item in FindItems(drctr.FullName))
                             {
@@ -183,7 +183,7 @@ namespace T1
                             }
                         }
 
-                        dirArgs.isEmpty = false;
+                        directoryArgs.isEmpty = false;
 
                     }
 
