@@ -23,7 +23,7 @@ namespace T1
 
 
         //хранит начальную директорию
-        static string path = @"D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
+        static string path = @"C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
 
 
         static void Main(string[] args)
@@ -33,6 +33,11 @@ namespace T1
 
             do
             {
+                fileInfo.FileFinded -= StopSearchForDocument;
+                fileInfo.FileFinded -= ExcludeFile;
+                fileInfo.DirectoryFinded -= ExcludeDirecotry;
+                fileInfo.DirectoryFinded -= StopSearchForDirectory;
+
                 try
                 {
 
@@ -149,13 +154,14 @@ Enter 2  to search WITH filtering");
 
                         
                         if (searchStopper)
-                        {                           
+                        {
+                            searchStopper = false;
                             break;
                         }
 
                         
                         addStopper = true;
-
+                        
 
                     }
                     

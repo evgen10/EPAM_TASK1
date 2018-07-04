@@ -24,3 +24,4 @@ C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csproj.C
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.exe
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.pdb
 D:\Tasks\Code\Task1\Epam_Task1\T1\obj\Debug\T1.csprojResolveAssemblyReference.cache
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csproj.CopyComplete
