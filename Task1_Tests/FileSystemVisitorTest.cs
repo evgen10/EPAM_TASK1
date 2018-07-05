@@ -39,8 +39,7 @@ namespace Task1_Tests
                 new CatalogItem { Name = "11032005.docx", Deep = 3, Item = CatalogItems.File },
                 new CatalogItem { Name = "14112018.docx", Deep = 3, Item = CatalogItems.File },
                 new CatalogItem { Name = "15022008.docx", Deep = 3, Item = CatalogItems.File },
-                new CatalogItem { Name = "16082009.docx", Deep = 3, Item = CatalogItems.File },
-                new CatalogItem { Name = "EmptyFolder", Deep = 1, Item = CatalogItems.Directory },
+                new CatalogItem { Name = "16082009.docx", Deep = 3, Item = CatalogItems.File },               
                 new CatalogItem { Name = "Music", Deep = 1, Item = CatalogItems.Directory },
                 new CatalogItem { Name = "Rap", Deep = 2, Item = CatalogItems.Directory },
                 new CatalogItem { Name = "6IX9INE-Billy.mp3", Deep = 3, Item = CatalogItems.File },
@@ -65,8 +64,6 @@ namespace Task1_Tests
                 new CatalogItem { Name = "TTT.zip", Deep = 1, Item = CatalogItems.File },
                 
             };
-
-
 
             //act
 
@@ -104,8 +101,7 @@ namespace Task1_Tests
                new CatalogItem { Name = "11062014.xlsx", Deep = 3, Item = CatalogItems.File },
                new CatalogItem { Name = "22112006.xlsx", Deep = 3, Item = CatalogItems.File },
                new CatalogItem { Name = "25032017.xlsx", Deep = 3, Item = CatalogItems.File },
-               new CatalogItem { Name = "Word", Deep = 2, Item = CatalogItems.Directory },
-               new CatalogItem { Name = "EmptyFolder", Deep = 1, Item = CatalogItems.Directory },
+               new CatalogItem { Name = "Word", Deep = 2, Item = CatalogItems.Directory },          
                new CatalogItem { Name = "Music", Deep = 1, Item = CatalogItems.Directory },
                new CatalogItem { Name = "Rap", Deep = 2, Item = CatalogItems.Directory },
                new CatalogItem { Name = "Rock&Roll", Deep = 2, Item = CatalogItems.Directory },

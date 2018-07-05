@@ -23,7 +23,8 @@ namespace T1
 
 
         //хранит начальную директорию
-        static string path = @"C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
+        
+        static string path = @"D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
 
 
         static void Main(string[] args)
