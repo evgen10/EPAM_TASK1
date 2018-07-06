@@ -19,7 +19,7 @@ namespace T1
 
         public CatalogItems  Item { get; set; }
 
-        public int Deep { get; set; }
+        public int NestingLevel { get; set; }
 
 
         public override int GetHashCode()
@@ -41,7 +41,7 @@ namespace T1
                 return false;
             }
 
-            return Name == item.Name && Item == item.Item && Deep == item.Deep;
+            return Name == item.Name && Item == item.Item && NestingLevel == item.NestingLevel;
 
         }
 

@@ -14,27 +14,27 @@ namespace T1
 
     public class FileEventArgs : EventArgs
     {
-        public string extention;
+        public string Extention { get; set; }
     }
 
     public class DirectoryEventArgs : EventArgs
     {
-        public bool isEmpty;
+        public bool IsEmpty { get; set; }
     }
 
 
     public class FileSystemVisitor
     {
         //вложенность файла или папки
-        private int deep = 0;
+        private int nestingLevel = 0;
         //указывает используется ли фильтр
-        private bool filtred;
+        private bool filtered;
 
 
         private FileEventArgs fileArgs = new FileEventArgs();
         private DirectoryEventArgs directoryArgs = new DirectoryEventArgs();
 
-        
+
         public event StartFinish Start;
         public event StartFinish Finish;
         public event EventHandler<FileEventArgs> FileFinded;
@@ -54,7 +54,7 @@ namespace T1
         public FileSystemVisitor(Filter filter)
         {
             MyFilter = filter;
-            filtred = true;
+            filtered = true;
         }
 
 
@@ -68,137 +68,115 @@ namespace T1
                 {
                     if (MyFilter(file))
                     {
-                        fileArgs.extention = file.Extension;
+                        fileArgs.Extention = file.Extension;
                         FilteredFileFinded?.Invoke(this, fileArgs);
-                        yield return new CatalogItem { Name = file.Name, Deep = deep, Item = CatalogItems.File };
+                        yield return new CatalogItem { Name = file.Name, NestingLevel = nestingLevel, Item = CatalogItems.File };
 
                     }
                 }
                 else
                 {
-                    fileArgs.extention = file.Extension;
+                    fileArgs.Extention = file.Extension;
                     FileFinded?.Invoke(this, fileArgs);
-                    yield return new CatalogItem { Name = file.Name, Deep = deep, Item = CatalogItems.File };
+                    yield return new CatalogItem { Name = file.Name, NestingLevel = nestingLevel, Item = CatalogItems.File };
                 }
 
             }
         }
 
 
-        public IEnumerable<CatalogItem> FindItems(string derictoryPath)
+        public IEnumerable<CatalogItem> FindItems(string directoryPath)
         {
 
             //Определяем начальную точку поиска
-            DirectoryInfo directory = new DirectoryInfo(derictoryPath);
+            DirectoryInfo startDirectory = new DirectoryInfo(directoryPath);
 
-            if (deep == 0)
+            if (nestingLevel == 0)
             {
                 //событие начала поиска
                 Start?.Invoke();
-               
 
-                if (filtred)
-                {
-                    FilteredDirectoryFinded?.Invoke(this, directoryArgs);
-                }
-                else
-                {
-                    DirectoryFinded?.Invoke(this, directoryArgs);
-                }
+                CallEventDirectoryFound();
 
-                yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
+                yield return new CatalogItem { Name = startDirectory.Name, NestingLevel = nestingLevel, Item = CatalogItems.Directory };
             }
 
-
-            if (directory.GetFiles().Length == 0 && directory.GetDirectories().Length == 0)
+            //если директория пустая
+            if (startDirectory.GetFiles().Length == 0 && startDirectory.GetDirectories().Length == 0)
             {
-                directoryArgs.isEmpty = true;
-                if (filtred)
-                {
-                    FilteredDirectoryFinded?.Invoke(this, directoryArgs);
-                }
-                else
-                {
-                    DirectoryFinded?.Invoke(this, directoryArgs);
-                }           
-                yield return new CatalogItem { Name = directory.Name, Deep = deep, Item = CatalogItems.Directory };
+                directoryArgs.IsEmpty = true;
+
+                CallEventDirectoryFound();
+
+                yield return new CatalogItem { Name = startDirectory.Name, NestingLevel = nestingLevel, Item = CatalogItems.Directory };
             }
             else
             {
-                directoryArgs.isEmpty = false;
+                directoryArgs.IsEmpty = false;
                 //получаем имеющиеся в данной точке директроии
-                var directories = directory.GetDirectories();
+                var directories = startDirectory.GetDirectories();
 
-                deep++;
-              
+                nestingLevel++;
+
 
                 //если директория не содержит других директорий
                 if (directories.Length == 0)
                 {
-
                     //получаем файлы в данной директории
-                    var files = directory.GetFiles();
-
+                    var files = startDirectory.GetFiles();
 
                     foreach (var item in FindFiles(files))
                     {
                         yield return item;
                     }
 
-                    deep--;
+                    nestingLevel--;
 
                 }
                 //если директория содержит элементы
                 else
                 {
                     //проходим по всем директориям 
-                    foreach (var drctr in directories)
+                    foreach (var directory in directories)
                     {
-                        bool dirEmpty = drctr.GetFiles().Length == 0 && drctr.GetDirectories().Length == 0;
+                        bool directoryEmpty = directory.GetFiles().Length == 0 && directory.GetDirectories().Length == 0;
 
-                        
-                        if (dirEmpty)
+
+                        if (directoryEmpty)
                         {
-                            directoryArgs.isEmpty = true;
+                            directoryArgs.IsEmpty = true;
                         }
 
-                        
-                        if (filtred)
-                        {
-                            FilteredDirectoryFinded?.Invoke(this, directoryArgs);
-                        }
-                        else
-                        {
-                            DirectoryFinded?.Invoke(this, directoryArgs);
-                        }
-                        yield return new CatalogItem { Name = drctr.Name, Deep = deep, Item = CatalogItems.Directory };
+                        CallEventDirectoryFound();
 
-                        if (!dirEmpty)                      
+                        yield return new CatalogItem { Name = directory.Name, NestingLevel = nestingLevel, Item = CatalogItems.Directory };
+
+                        if (!directoryEmpty)
                         {
-                            directoryArgs.isEmpty = false;
+                            directoryArgs.IsEmpty = false;
                             //проходим по элементам в директории
-                            foreach (var item in FindItems(drctr.FullName))
+                            foreach (var item in FindItems(directory.FullName))
                             {
                                 yield return item;
                             }
                         }
 
-                        directoryArgs.isEmpty = false;
+                        directoryArgs.IsEmpty = false;
 
                     }
 
                     //получаем файлы в данной директории
-                    var files = directory.GetFiles();
+                    var files = startDirectory.GetFiles();
 
                     foreach (var item in FindFiles(files))
                     {
                         yield return item;
                     }
 
-                    deep--;
+                    nestingLevel--;
 
                     //завершение поиска
-                    if (deep == 0)
+                    if (nestingLevel == 0)
                     {
                         Finish?.Invoke();
                     }
@@ -207,5 +185,16 @@ namespace T1
             }
         }
 
+        private void CallEventDirectoryFound()
+        {
+            if (filtered)
+            {
+                FilteredDirectoryFinded?.Invoke(this, directoryArgs);
+            }
+            else
+            {
+                DirectoryFinded?.Invoke(this, directoryArgs);
+            }
+        }
     }
 }

@@ -16,3 +16,25 @@ D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\System.ValueTuple.xml
 D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.csprojResolveAssemblyReference.cache
 D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.dll
 D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.pdb
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Task1_Tests.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Task1_Tests.pdb
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Castle.Core.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Moq.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\System.ValueTuple.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\T1.exe
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\ConsoleApplicationLibrary.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\T1.pdb
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\T1.exe.config
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Castle.Core.xml
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Moq.pdb
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\Moq.xml
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\System.ValueTuple.xml
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\ru\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.csprojResolveAssemblyReference.cache
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.csproj.CoreCompileInputs.cache
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.csproj.CopyComplete
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\obj\Debug\Task1_Tests.pdb

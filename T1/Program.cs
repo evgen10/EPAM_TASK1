@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+
+//
 using ConsoleApplicationLibrary.UtilityClasses;
 
 namespace T1
 {
     public class Program
     {
-
         //флаг для остановки поиска
         static bool searchStopper = false;
         //флаг для исключения элемента из списка
@@ -24,35 +25,33 @@ namespace T1
 
         //хранит начальную директорию
         
-        static string path = @"D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
-
+        //static string path = @"D:\Tasks\Code\Task1\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";     
+        static string startDirectory = @"C:\Users\iammr\Desktop\Новая папка\Epam_Task1\Task1_Tests\bin\Debug\TestFolder";
 
         static void Main(string[] args)
         {    
            // string path = @"C:\Users\Evgeniy_Chernyshkov\Desktop\New Folder (3)";
-            FileSystemVisitor fileInfo = new FileSystemVisitor();
+            FileSystemVisitor fileSystemVisitor = new FileSystemVisitor();
 
             do
             {
-                fileInfo.FileFinded -= StopSearchForDocument;
-                fileInfo.FileFinded -= ExcludeFile;
-                fileInfo.DirectoryFinded -= ExcludeDirecotry;
-                fileInfo.DirectoryFinded -= StopSearchForDirectory;
+                fileSystemVisitor.FileFinded -= StopSearchForDocument;
+                fileSystemVisitor.FileFinded -= ExcludeFile;
+                fileSystemVisitor.DirectoryFinded -= ExcludeDirecotry;
+                fileSystemVisitor.DirectoryFinded -= StopSearchForDirectory;
 
                 try
                 {
-
                     Console.WriteLine(@"Enter 1  to search WITHOUT filtering
 Enter 2  to search WITH filtering");
 
 
                     switch (ConsoleInput.EnterPositiveIntengerNumber())
                     {
-
                         case 1:
                             {
 
-                                fileInfo = new FileSystemVisitor();
+                                fileSystemVisitor = new FileSystemVisitor();
                                
 
                                 Console.WriteLine(@"Select action for event. 
@@ -63,7 +62,6 @@ Enter 2  to search WITH filtering");
 5-Show all files and directories
 
 ");
-
                                 switch (ConsoleInput.EnterPositiveIntengerNumber())
                                 {
 
@@ -71,24 +69,24 @@ Enter 2  to search WITH filtering");
                                         {
                                             Console.WriteLine(@"Enter extension for file. For example .txt");
                                             extensionForFile = Console.ReadLine();
-                                            fileInfo.FileFinded += StopSearchForDocument;
+                                            fileSystemVisitor.FileFinded += StopSearchForDocument;
                                             break;
                                         }
                                     case 2:
                                         {
                                             Console.WriteLine(@"Enter extension for file. For example .txt");
                                             extensionForFile = Console.ReadLine();
-                                            fileInfo.FileFinded += ExcludeFile;
+                                            fileSystemVisitor.FileFinded += ExcludeFile;
                                             break;
                                         }
                                     case 3:
                                         {
-                                            fileInfo.DirectoryFinded += StopSearchForDirectory;
+                                            fileSystemVisitor.DirectoryFinded += StopSearchForDirectory;
                                             break;
                                         }
                                     case 4:
                                         {
-                                            fileInfo.DirectoryFinded += ExcludeDirecotry;
+                                            fileSystemVisitor.DirectoryFinded += ExcludeDirecotry;
                                             break;
                                         }
                                     case 5:
@@ -113,39 +111,38 @@ Enter 2  to search WITH filtering");
 
                                 SearchFilter filter = new SearchFilter(extensionForFilter);
 
-                                fileInfo = new FileSystemVisitor(filter.MFilter);
+                                fileSystemVisitor = new FileSystemVisitor(filter.MFilter);
                                 break;
                             }
 
                         default:
-                            {
-                               
+                            {                               
                                 continue;                             
                             }
 
                     }
          
                     //присвоение обработчиков событиям
-                    fileInfo.Start += OnStarted;
-                    fileInfo.Finish += OnFinished;
+                    fileSystemVisitor.Start += OnStarted;
+                    fileSystemVisitor.Finish += OnFinished;
 
-                    fileInfo.DirectoryFinded += ChangeDirectoryColor;
+                    fileSystemVisitor.DirectoryFinded += ChangeDirectoryColor;
 
                 
-                    fileInfo.FilteredFileFinded += ChangeColorForFiltredFile;
+                    fileSystemVisitor.FilteredFileFinded += ChangeColorForFiltredFile;
 
-                    fileInfo.FilteredDirectoryFinded += ChangeColorForFiltredDirectory;
+                    fileSystemVisitor.FilteredDirectoryFinded += ChangeColorForFiltredDirectory;
             
 
                     //Вызваем итератор
-                    foreach (var item in fileInfo.FindItems(path))
+                    foreach (var item in fileSystemVisitor.FindItems(startDirectory))
                     {
                         
                         if (addStopper)
                         {
                             //количество отступов в зависимости от уровня вложенности
                             StringBuilder space = new StringBuilder();
-                            space.Append(' ', item.Deep);
+                            space.Append(' ', item.NestingLevel);
 
                             Console.WriteLine(space + item.Name);
 
@@ -178,8 +175,7 @@ Enter 2  to search WITH filtering");
 
 
 
-        }  
-       
+        }        
 
 
 
@@ -188,7 +184,7 @@ Enter 2  to search WITH filtering");
         //останавливает поиск
         private static void StopSearchForDocument(object sender, FileEventArgs e)
         {
-            if (e.extention == extensionForFile)
+            if (e.Extention == extensionForFile)
             {
                 searchStopper = true;
             }
@@ -199,7 +195,7 @@ Enter 2  to search WITH filtering");
         //исключает файл из итогового списка
         private static void ExcludeFile(object sender, FileEventArgs e)
         {
-            if (e.extention == extensionForFile)
+            if (e.Extention == extensionForFile)
             {
                 addStopper = false;
             }
@@ -212,7 +208,7 @@ Enter 2  to search WITH filtering");
         //исключает директорию из итоговго списка
         private static void ExcludeDirecotry(object sender, DirectoryEventArgs e)
         {
-            if (e.isEmpty)
+            if (e.IsEmpty)
             {
                 addStopper = false;
             }
@@ -232,7 +228,7 @@ Enter 2  to search WITH filtering");
         //останавливает поиск
         private static void StopSearchForDirectory(object sender, DirectoryEventArgs e)
         {
-            if (e.isEmpty)
+            if (e.IsEmpty)
             {
                 searchStopper = true;
             }
@@ -244,7 +240,7 @@ Enter 2  to search WITH filtering");
         //останавливает поиск
         private static void FilteredFileStopSearch(object sender, FileEventArgs e)
         {
-            if (e.extention == extensionForFilter)
+            if (e.Extention == extensionForFilter)
             {
                 searchStopper = true;
             }
