@@ -20,8 +20,8 @@ C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\bin\Debug\T1.exe.conf
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\bin\Debug\T1.exe
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\bin\Debug\T1.pdb
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csprojResolveAssemblyReference.cache
-C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csproj.CoreCompileInputs.cache
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.exe
 C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.pdb
 D:\Tasks\Code\Task1\Epam_Task1\T1\obj\Debug\T1.csprojResolveAssemblyReference.cache
-C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\obj\Debug\T1.csproj.CopyComplete
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\bin\Debug\ConsoleApplicationLibrary.dll
+C:\Users\iammr\Desktop\Новая папка\Epam_Task1\T1\bin\Debug\ConsoleApplicationLibrary.pdb

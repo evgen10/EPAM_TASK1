@@ -185,6 +185,7 @@ namespace T1
             }
         }
 
+     
         private void CallEventDirectoryFound()
         {
             if (filtered)

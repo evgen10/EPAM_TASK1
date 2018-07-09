@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 
-//
+
 using ConsoleApplicationLibrary.UtilityClasses;
 
 namespace T1
@@ -154,6 +154,7 @@ Enter 2  to search WITH filtering");
                         if (searchStopper)
                         {
                             searchStopper = false;
+                            OnFinished();
                             break;
                         }
 
